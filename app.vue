@@ -61,6 +61,29 @@
         </span>
       </div>
     </section>
+    <section class="container__note-container">
+      <div class="container__note-container__note-card">
+        <p class="container__note-container__note-card__text">test note</p>
+      </div>
+      <div class="container__note-container__note-card">
+        <p class="container__note-container__note-card__text">test note</p>
+      </div>
+      <div class="container__note-container__note-card">
+        <p class="container__note-container__note-card__text">test note</p>
+      </div>
+      <div class="container__note-container__note-card">
+        <p class="container__note-container__note-card__text">test note</p>
+      </div>
+      <div class="container__note-container__note-card">
+        <p class="container__note-container__note-card__text">test note</p>
+      </div>
+      <div class="container__note-container__note-card">
+        <p class="container__note-container__note-card__text">test note</p>
+      </div>
+      <div class="container__note-container__note-card">
+        <p class="container__note-container__note-card__text">test note</p>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -68,7 +91,7 @@
 
 <style>
 .container {
-  width: 100%;
+  width: 100vw;
   height: 85vh;
   display: flex;
   flex-direction: column;
@@ -115,5 +138,30 @@
   background: var(--clr);
   box-shadow: 0 0 10px #00000049;
   cursor: pointer;
+}
+
+.container__note-container {
+  width: clamp(280px, 80%, 900px);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.container__note-container__note-card {
+  height: 80px;
+  display: flex;
+  box-shadow: 0 0 10px #00000049;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.container__note-container__note-card__text {
+  font-size: 1.2rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
