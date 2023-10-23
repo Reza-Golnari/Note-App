@@ -7,6 +7,8 @@
         type="text"
         class="container__add-note-box__input"
         placeholder="Enter Your New Note"
+        ref="noteInput"
+        v-model="noteText"
       />
       <div class="container__add-note-box__color-container">
         <span
@@ -26,17 +28,17 @@
         </span>
         <span
           class="container__add-note-box__color-container__color"
-          style="--clr: #16a085"
+          style="--clr: #55efc4"
         >
         </span>
         <span
           class="container__add-note-box__color-container__color"
-          style="--clr: #2ecc71"
+          style="--clr: #81ecec"
         >
         </span>
         <span
           class="container__add-note-box__color-container__color"
-          style="--clr: #27ae60"
+          style="--clr: #00cec9"
         >
         </span>
         <span
@@ -46,19 +48,59 @@
         </span>
         <span
           class="container__add-note-box__color-container__color"
-          style="--clr: #e74c3c"
+          style="--clr: #ff7675"
         >
         </span>
         <span
           class="container__add-note-box__color-container__color"
-          style="--clr: #3498db"
+          style="--clr: #fd79a8"
         >
         </span>
         <span
           class="container__add-note-box__color-container__color"
-          style="--clr: #2980b9"
+          style="--clr: #ffeaa7"
         >
         </span>
+      </div>
+      <div class="container__add-note-box__btn-container">
+        <button
+          class="container__add-note-box__btn-container__btn container__add-note-box__btn-container__add-btn"
+          ref="addNoteBtn"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 4.5v15m7.5-7.5h-15"
+            />
+          </svg>
+        </button>
+        <button
+          class="container__add-note-box__btn-container__btn container__add-note-box__btn-container__delete-btn"
+          ref="deleteNoteBtn"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+            />
+          </svg>
+        </button>
       </div>
     </section>
     <section class="container__note-container">
@@ -87,7 +129,30 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+let noteText = ref("");
+let noteBg = ref("#fff");
+const noteInput = ref(null);
+const addNoteBtn = ref(null);
+const deleteNoteBtn = ref(null);
+
+onMounted(() => {
+  // noteInput.value.focus();
+  const colorList = document.querySelectorAll(
+    ".container__add-note-box__color-container__color"
+  );
+  colorList.forEach((color) => {
+    color.addEventListener("click", (e) => {
+      noteBg.value = e.target.style.getPropertyValue("--clr");
+    });
+  });
+
+  deleteNoteBtn.value.addEventListener("click", () => {
+    noteText.value = "";
+    noteBg.value = "#fff";
+  });
+});
+</script>
 
 <style>
 .container {
@@ -120,6 +185,7 @@
   border-radius: 5px;
   box-shadow: 0 2px 15px #0000004d;
   font-size: 1.2rem;
+  background-color: v-bind(noteBg);
 }
 
 .container__add-note-box__color-container {
@@ -163,5 +229,46 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.container__add-note-box__btn-container {
+  margin-top: 10px;
+  width: clamp(250px, 400px, 400px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.container__add-note-box__btn-container__btn {
+  all: unset;
+  width: 100px;
+  padding: 10px;
+  border: 2px solid #74b9ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  color: #74b9ff;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.container__add-note-box__btn-container__btn:hover {
+  background-color: #74b9ff;
+  color: #fff;
+}
+
+.container__add-note-box__btn-container__delete-btn {
+  border-color: #d63031;
+  color: #d63031;
+}
+
+.container__add-note-box__btn-container__delete-btn:hover {
+  background-color: #d63031;
+  color: #fff;
+}
+
+.container__add-note-box__btn-container__btn svg {
+  width: 30px;
 }
 </style>
