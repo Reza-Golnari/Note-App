@@ -66,6 +66,7 @@
         <button
           class="container__add-note-box__btn-container__btn container__add-note-box__btn-container__add-btn"
           ref="addNoteBtn"
+          @click="addNote"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -104,26 +105,14 @@
       </div>
     </section>
     <section class="container__note-container">
-      <div class="container__note-container__note-card">
-        <p class="container__note-container__note-card__text">test note</p>
-      </div>
-      <div class="container__note-container__note-card">
-        <p class="container__note-container__note-card__text">test note</p>
-      </div>
-      <div class="container__note-container__note-card">
-        <p class="container__note-container__note-card__text">test note</p>
-      </div>
-      <div class="container__note-container__note-card">
-        <p class="container__note-container__note-card__text">test note</p>
-      </div>
-      <div class="container__note-container__note-card">
-        <p class="container__note-container__note-card__text">test note</p>
-      </div>
-      <div class="container__note-container__note-card">
-        <p class="container__note-container__note-card__text">test note</p>
-      </div>
-      <div class="container__note-container__note-card">
-        <p class="container__note-container__note-card__text">test note</p>
+      <div
+        class="container__note-container__note-card"
+        v-for="note in noteArray"
+        :style="'background-color:' + note.bg"
+      >
+        <p class="container__note-container__note-card__text">
+          {{ note.text }}
+        </p>
       </div>
     </section>
   </div>
@@ -132,11 +121,33 @@
 <script setup>
 let noteText = ref("");
 let noteBg = ref("#fff");
+let noteArray = ref([]);
 const noteInput = ref(null);
 const addNoteBtn = ref(null);
 const deleteNoteBtn = ref(null);
 
+function addNote() {
+  noteArray.value.push({
+    text: noteText.value,
+    bg: noteBg.value,
+  });
+  updateLocalStorage();
+  reset();
+}
+
+function reset() {
+  noteText.value = "";
+  noteBg.value = "#fff";
+}
+
+function updateLocalStorage() {
+  localStorage.setItem("notesList", JSON.stringify(noteArray.value));
+}
+
 onMounted(() => {
+  noteArray.value = JSON.parse(localStorage.getItem("notesList")) || [];
+  console.log(noteArray.value);
+  console.log(localStorage.getItem("notesList"));
   // noteInput.value.focus();
   const colorList = document.querySelectorAll(
     ".container__add-note-box__color-container__color"
@@ -147,10 +158,7 @@ onMounted(() => {
     });
   });
 
-  deleteNoteBtn.value.addEventListener("click", () => {
-    noteText.value = "";
-    noteBg.value = "#fff";
-  });
+  deleteNoteBtn.value.addEventListener("click", () => reset());
 });
 </script>
 
@@ -220,6 +228,7 @@ onMounted(() => {
   padding: 10px;
   border-radius: 8px;
   cursor: pointer;
+  border: 1px solid #00000062;
 }
 
 .container__note-container__note-card__text {
