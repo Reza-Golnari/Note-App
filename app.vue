@@ -139,13 +139,7 @@ function addNote() {
 }
 
 function deleteNote(props, event) {
-  if (event.target.className === "container__note-container__note-card") {
-    // event.target.remove();
-    removeNote(props[0]);
-  } else {
-    // event.target.parentElement.remove();
-    removeNote(props[0]);
-  }
+  removeNote(props[0]);
 }
 
 function reset() {
@@ -209,6 +203,7 @@ onMounted(() => {
   box-shadow: 0 2px 15px #0000004d;
   font-size: 1.2rem;
   background-color: v-bind(noteBg);
+  transition: background-color 0.2s;
 }
 
 .container__add-note-box__color-container {
