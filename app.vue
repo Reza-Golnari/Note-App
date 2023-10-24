@@ -9,6 +9,7 @@
         placeholder="Enter Your New Note"
         ref="noteInput"
         v-model="noteText"
+        @keypress.enter="addNote"
       />
       <div class="container__add-note-box__color-container">
         <span
@@ -109,6 +110,7 @@
         class="container__note-container__note-card"
         v-for="note in noteArray"
         :style="'background-color:' + note.bg"
+        @click="deleteNote([note.id], $event)"
       >
         <p class="container__note-container__note-card__text">
           {{ note.text }}
@@ -128,6 +130,7 @@ const deleteNoteBtn = ref(null);
 
 function addNote() {
   noteArray.value.push({
+    id: noteArray.value.length + 1,
     text: noteText.value,
     bg: noteBg.value,
   });
@@ -135,9 +138,24 @@ function addNote() {
   reset();
 }
 
+function deleteNote(props, event) {
+  if (event.target.className === "container__note-container__note-card") {
+    // event.target.remove();
+    removeNote(props[0]);
+  } else {
+    // event.target.parentElement.remove();
+    removeNote(props[0]);
+  }
+}
+
 function reset() {
   noteText.value = "";
   noteBg.value = "#fff";
+}
+
+function removeNote(id) {
+  noteArray.value = noteArray.value.filter((note) => note.id !== id);
+  updateLocalStorage();
 }
 
 function updateLocalStorage() {
@@ -146,9 +164,6 @@ function updateLocalStorage() {
 
 onMounted(() => {
   noteArray.value = JSON.parse(localStorage.getItem("notesList")) || [];
-  console.log(noteArray.value);
-  console.log(localStorage.getItem("notesList"));
-  // noteInput.value.focus();
   const colorList = document.querySelectorAll(
     ".container__add-note-box__color-container__color"
   );
